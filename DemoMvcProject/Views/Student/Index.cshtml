@@ -1,0 +1,201 @@
+@model DemoMvcProject.Models.ViewModels.IndexView
+@using DemoMvcProject.Models;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="card">
+    @* <div class="card-header bg-dark mb-1">
+        <h3 class="card-title ">Index</h3>
+    </div> *@
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <form id="search-form" asp-action="Index">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="md-form ">
+                                <label asp-for="Search.FirstName" class="control-label"></label>
+                                <input   asp-for="Search.FirstName" class="form-control" />
+                                <span asp-validation-for="Search.FirstName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="md-form ">
+                                <label asp-for="Search.LastName" class="control-label"></label>
+                                <input   asp-for="Search.LastName" class="form-control" />
+                                <span asp-validation-for="Search.LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="md-form ">
+                                <label asp-for="Search.DOB" class="control-label"></label>
+                                <input   asp-for="Search.DOB" class="form-control" />
+                                <span asp-validation-for="Search.DOB" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="md-form ">
+                                <label asp-for="Search.Email" class="control-label"></label>
+                                <input   asp-for="Search.Email" class="form-control" />
+                                <span asp-validation-for="Search.Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="md-form ">
+                                <label asp-for="Search.Phone" class="control-label"></label>
+                                <input   asp-for="Search.Phone" class="form-control" />
+                                <span asp-validation-for="Search.Phone" class="text-danger"></span>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="btn-group">
+                                <input type="submit" value="Search" class="btn btn-sm btn-rounded btn-primary" />
+                                <input type="button" class="btn btn-sm btn-rounded btn-secondary"  onclick="clear_fields(); return false;" value="Clear" />
+                            </div>
+                        </div>
+                       
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-footer ">
+        @* <a asp-action="Create">Create New</a> *@
+        <button type="button" class="btn btn-sm btn-rounded btn-default btn-sm" onclick="index_get_helper('@Url.Action("CreatePartial","Student")','Create')">
+            Create New
+        </button>
+    </div>
+</div>
+
+
+<div class="card mt-5">
+    <div class="card-header">
+        <h4 class="text-sucess"></h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="result_grid" class="table table-hover table-sm ">
+                <thead >
+                    <tr>
+                        @{ StudentModel student = new StudentModel();}
+                        <th>
+                            @Html.DisplayNameFor( model => student.FirstName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => student.LastName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => student.DOB)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => student.Email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => student.Phone)
+                        </th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.students)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DOB)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Phone)
+                            </td>
+                            @* <td>
+
+                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                </td> *@
+                            <td>
+                                <button class="btn btn-sm btn-rounded btn-primary"
+                                onclick="index_get_helper('@Url.Action("EditPartial","Student",new {id= item.Id})','Edit')"> Edit</button>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-rounded btn-info"
+                                onclick="index_get_helper('@Url.Action("DetailsPartial","Student",new {id= item.Id})','Details')">
+                                    Details</button>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-rounded btn-danger"
+                                onclick="index_get_helper('@Url.Action("DeletePartial","Student",new {id= item.Id})','Delete')">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+
+
+@* <div class="row">
+    <div class="col-md-4">
+        <a asp-action="Populate">Bulk Populate Data</a>
+    </div>
+</div> *@
+
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="ajax-popup-modal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"> <span id="ajax-modal-title"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div id="ajax-form-result" >
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

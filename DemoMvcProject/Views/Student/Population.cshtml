@@ -1,0 +1,34 @@
+@{
+    ViewData["Title"] = "Populate";
+}
+
+
+<div class="row">
+    <div class=col-md-4>
+        <form asp-action="Populate">
+            <label for="population">Number Of Entries</label>
+            <input type="number" style="width : 100%" required name="Population" id="Population" min="1" max="100">
+            <input type="submit" class="mt-2 btn btn-defaults" value="Populate">
+        </form>
+
+
+
+        @if (ViewBag.IsSucess != null)
+        {
+
+            if (ViewBag.IsSucess)
+            {
+                <div class="alert alert-success" role="alert">
+                    <strong>Sucess</strong> Sucessfully Inserted @ViewBag.Message Records
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-danger" role="alert">
+                    <strong> Jaa Na Lawde </strong> @ViewBag.Message Records
+                </div>
+            }
+
+        }
+    </div>
+</div>
